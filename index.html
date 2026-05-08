@@ -255,11 +255,38 @@
       align-items: stretch;
     }
     .chat-window { padding: 0; overflow: hidden; }
-    .chat-top { padding: 18px 20px; border-bottom: 1px solid var(--line); display:flex; justify-content:space-between; align-items:center; }
-    .chat-body { padding: 20px; display:grid; gap: 13px; }
+    .chat-top { padding: 18px 20px; border-bottom: 1px solid var(--line); display:flex; justify-content:space-between; align-items:center; gap: 12px; }
+    .chat-body { padding: 20px; display:grid; gap: 13px; max-height: 390px; overflow-y: auto; scroll-behavior: smooth; }
+    .quick-questions { padding: 0 20px 16px; display: flex; flex-wrap: wrap; gap: 9px; border-bottom: 1px solid var(--line); }
+    .quick-question {
+      border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--line));
+      background: color-mix(in srgb, var(--accent) 7%, transparent);
+      color: var(--accent);
+      border-radius: 999px;
+      min-height: 38px;
+      padding: 0 12px;
+      font-weight: 850;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .quick-question:hover { border-color: var(--accent); transform: translateY(-1px); }
     .bubble { max-width: 88%; padding: 14px 16px; border-radius: 18px; line-height: 1.55; color: var(--soft); border: 1px solid var(--line); background: color-mix(in srgb, var(--surface-strong) 72%, transparent); }
     .bubble.user { justify-self: end; color: white; background: linear-gradient(135deg, var(--accent), var(--accent-2)); border: 0; }
     .bubble.apollo { justify-self: start; }
+    .chat-form { padding: 16px 20px 20px; display: flex; gap: 10px; border-top: 1px solid var(--line); background: color-mix(in srgb, var(--surface-strong) 54%, transparent); }
+    .chat-form input {
+      flex: 1;
+      min-width: 0;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      min-height: 44px;
+      padding: 0 16px;
+      background: var(--surface);
+      color: var(--ink);
+      font: inherit;
+      outline: none;
+    }
+    .chat-form input:focus { border-color: color-mix(in srgb, var(--accent) 55%, var(--line)); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 10%, transparent); }
 
     .project-card { padding: 0; overflow: hidden; }
     .project-shot {
@@ -495,13 +522,20 @@
           </div>
         </div>
         <div class="card chat-window">
-          <div class="chat-top"><strong>Apollo preview</strong><span class="tag">Mock now • Real later</span></div>
-          <div class="chat-body">
-            <div class="bubble user">What is Kfir’s strongest project?</div>
-            <div class="bubble apollo">GeoDish is a fullstack and DevOps project with Flask, MongoDB, Docker, Kubernetes on EKS, Terraform, Jenkins, ArgoCD, and monitoring with Prometheus/Grafana.</div>
-            <div class="bubble user">Why is he relevant for a junior role?</div>
-            <div class="bubble apollo">He combines software engineering fundamentals, real support/NOC experience, teaching experience, and practical deployment skills.</div>
+          <div class="chat-top"><strong>Apollo assistant</strong><span class="tag">Free smart demo</span></div>
+          <div class="quick-questions" aria-label="Quick Apollo questions">
+            <button class="quick-question" type="button" data-question="Why should a recruiter hire Kfir?">Why hire Kfir?</button>
+            <button class="quick-question" type="button" data-question="Tell me about GeoDish">GeoDish</button>
+            <button class="quick-question" type="button" data-question="What stack does Kfir use?">Stack</button>
+            <button class="quick-question" type="button" data-question="Is Kfir relevant for a Junior Fullstack role?">Junior fit</button>
           </div>
+          <div class="chat-body" id="apolloMessages" aria-live="polite">
+            <div class="bubble apollo">Hi, I’m Apollo. Ask me about Kfir’s projects, stack, CV, DevOps background, or why he fits a Junior Fullstack role.</div>
+          </div>
+          <form class="chat-form" id="apolloForm">
+            <input id="apolloInput" type="text" autocomplete="off" placeholder="Ask Apollo about Kfir..." aria-label="Ask Apollo about Kfir" />
+            <button class="btn primary" type="submit">Ask</button>
+          </form>
         </div>
       </div>
     </section>
@@ -652,6 +686,75 @@
     setTheme(saved || (prefersDark ? 'dark' : 'light'));
     btn.addEventListener('click', () => setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark'));
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    const apolloMessages = document.getElementById('apolloMessages');
+    const apolloForm = document.getElementById('apolloForm');
+    const apolloInput = document.getElementById('apolloInput');
+    const apolloAnswers = [
+      {
+        keys: ['geodish', 'strongest', 'best project', 'main project', 'kubernetes', 'aws', 'devops'],
+        answer: 'GeoDish is Kfir’s strongest showcase. It combines a Flask backend, MongoDB, Docker, Kubernetes on AWS EKS, Terraform, Jenkins, ArgoCD, and monitoring with Prometheus/Grafana. It shows both fullstack thinking and real DevOps delivery.'
+      },
+      {
+        keys: ['hire', 'recruiter', 'why kfir', 'why should', 'value'],
+        answer: 'A recruiter should consider Kfir because he brings a rare junior profile: software engineering fundamentals, practical support/NOC experience, teaching experience, and hands-on fullstack plus DevOps projects. He can build features, understand production issues, and communicate clearly.'
+      },
+      {
+        keys: ['stack', 'skills', 'technologies', 'tech', 'tools'],
+        answer: 'Kfir’s stack includes React, Next.js, JavaScript, Node.js, Python, Flask, Spring Boot, MongoDB, PostgreSQL, Firebase, Docker, Kubernetes, Helm, Jenkins, Terraform, AWS, ArgoCD, Prometheus, Grafana, Linux, and Bash.'
+      },
+      {
+        keys: ['junior', 'fullstack', 'role', 'fit', 'relevant'],
+        answer: 'Yes. Kfir is relevant for Junior Fullstack roles because he has a B.Sc. in Software Engineering, real project work across frontend and backend, and a DevOps advantage that helps him understand deployment, CI/CD, cloud infrastructure, and production-style workflows.'
+      },
+      {
+        keys: ['attenglish', 'adhd', 'education', 'mobile', 'flutter'],
+        answer: 'Attenglish is Kfir’s mobile learning project for helping ADHD pupils practice English in a more focused and accessible way. It highlights product thinking, education-oriented UX, and Flutter/Dart development.'
+      },
+      {
+        keys: ['certificate', 'certification', 'devops bootcamp', 'develeap'],
+        answer: 'Kfir completed a DevOps Professional Bootcamp certificate from Develeap Education in 2025, supporting his practical foundation in CI/CD, containers, cloud infrastructure, automation, and DevOps workflows.'
+      },
+      {
+        keys: ['contact', 'email', 'linkedin', 'github'],
+        answer: 'You can contact Kfir at kfiramoyal@gmail.com, view his GitHub at github.com/kfiros94, or visit his LinkedIn profile from the contact section of this site.'
+      }
+    ];
+
+    function apolloReply(question) {
+      const text = question.toLowerCase();
+      const hit = apolloAnswers.find(item => item.keys.some(key => text.includes(key)));
+      if (hit) return hit.answer;
+      return 'Kfir is a Junior Fullstack Developer candidate with a DevOps advantage. The best questions to ask me are about GeoDish, his stack, why he fits a junior role, Attenglish, certifications, or how to contact him.';
+    }
+
+    function addApolloBubble(text, type) {
+      if (!apolloMessages) return;
+      const bubble = document.createElement('div');
+      bubble.className = `bubble ${type}`;
+      bubble.textContent = text;
+      apolloMessages.appendChild(bubble);
+      apolloMessages.scrollTop = apolloMessages.scrollHeight;
+    }
+
+    function askApollo(question) {
+      const clean = question.trim();
+      if (!clean) return;
+      addApolloBubble(clean, 'user');
+      window.setTimeout(() => addApolloBubble(apolloReply(clean), 'apollo'), 180);
+    }
+
+    if (apolloForm && apolloInput) {
+      apolloForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        askApollo(apolloInput.value);
+        apolloInput.value = '';
+        apolloInput.focus();
+      });
+    }
+    document.querySelectorAll('.quick-question').forEach((button) => {
+      button.addEventListener('click', () => askApollo(button.dataset.question || button.textContent));
+    });
 
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reducedMotion && window.gsap && window.ScrollTrigger) {
