@@ -458,7 +458,7 @@
       <div class="wrap hero-grid">
         <div>
           <div class="eyebrow"><span class="pulse"></span> Open to Junior Fullstack / DevOps-aware roles</div>
-          <h1>Kfir is Here.<span class="name-line">Kfir Amoyal</span></h1>
+          <h1>Kfir Amoyal</h1>
           <p class="lead">Junior Fullstack Developer and B.Sc. Software Engineering graduate, building practical web products with React, Node.js, Python, cloud-native DevOps, and a hands-on AI assistant mindset.</p>
           <div class="hero-actions">
             <a class="btn primary" href="#projects">View projects</a>
@@ -676,8 +676,14 @@
         scrollTrigger: { trigger: '.cinematic-hero', start: 'top top', end: 'bottom top', scrub: true }
       });
       gsap.to('.hero h1', {
-        yPercent: -8, opacity: 0.72, ease: 'none',
-        scrollTrigger: { trigger: '.cinematic-hero', start: '35% top', end: 'bottom top', scrub: true }
+        yPercent: -8, ease: 'none',
+        scrollTrigger: {
+          trigger: '.cinematic-hero',
+          start: '35% top',
+          end: 'bottom top',
+          scrub: true,
+          onLeaveBack: () => gsap.set('.hero h1', { opacity: 1, visibility: 'visible', yPercent: 0 })
+        }
       });
 
       gsap.utils.toArray('.reveal').forEach((section) => {
