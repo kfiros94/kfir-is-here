@@ -346,6 +346,19 @@
       object-position: top center;
       display: block;
     }
+    .project-shot.contain {
+      height: clamp(220px, 28vw, 320px);
+      background: color-mix(in srgb, var(--surface) 92%, white);
+      padding: 10px;
+    }
+    .project-shot.contain img {
+      object-fit: contain;
+      object-position: center;
+      border-radius: 16px;
+    }
+    .project-shot.contain::after {
+      display: none;
+    }
 
     /* Cinematic / scroll-driven layer */
     .cinematic-wash {
@@ -562,7 +575,7 @@
         </div>
         <div class="grid-2">
           <article class="card project-card">
-            <div class="project-shot placeholder" aria-label="GeoDish screenshot coming soon"></div>
+            <div class="project-shot contain"><img src="geodish-architecture.png" alt="GeoDish cloud architecture diagram" /></div>
             <div class="project-content">
               <h3>GeoDish: Fullstack + DevOps showcase</h3>
               <p>Cloud-native food discovery app combining a Flask backend, MongoDB, containers, Kubernetes, AWS infrastructure, GitOps, CI/CD, and observability.</p>
