@@ -394,7 +394,7 @@
     .cinematic-hero .wrap { position: relative; z-index: 2; }
     .cinematic-hero h1 { text-shadow: 0 18px 60px color-mix(in srgb, var(--accent) 12%, transparent); }
     .cinematic-hero .portrait-card { will-change: transform; }
-    .reveal, .reveal-card, .project-card, .cert-card, .skill-cloud .tag { will-change: transform, opacity; }
+    .reveal, .reveal-card, .project-card, .cert-card, .skill-bubble { will-change: transform, opacity; }
     .sticky-cinema { min-height: 100vh; display: grid; align-items: start; }
     .sticky-cinema .section-head {
       position: sticky;
@@ -448,8 +448,78 @@
     .cert-meta { display:flex; flex-wrap:wrap; gap:10px; margin: 16px 0 20px; }
     .meta-pill { border: 1px solid var(--line); padding: 8px 11px; border-radius: 999px; color: var(--soft); font-size: 13px; font-weight: 850; background: color-mix(in srgb, var(--surface-strong) 72%, transparent); }
 
-    .skill-cloud { display:flex; flex-wrap:wrap; gap:10px; }
-    .skill-cloud .tag { font-size: 13px; padding: 9px 12px; }
+    .skill-cloud {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+      gap: 14px;
+      perspective: 1000px;
+    }
+    .skill-bubble {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 1;
+      border: 0;
+      background: transparent;
+      padding: 0;
+      cursor: pointer;
+      perspective: 900px;
+      color: var(--ink);
+    }
+    .skill-bubble-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform .58s cubic-bezier(.2,.8,.2,1);
+    }
+    .skill-bubble:hover .skill-bubble-inner,
+    .skill-bubble:focus-visible .skill-bubble-inner,
+    .skill-bubble.is-flipped .skill-bubble-inner { transform: rotateY(180deg); }
+    .skill-face {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 32% 20%, rgba(255,255,255,.78), transparent 28%),
+        linear-gradient(135deg, color-mix(in srgb, var(--surface-strong) 90%, transparent), color-mix(in srgb, var(--accent) 8%, var(--surface)));
+      box-shadow: var(--shadow-soft);
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+    .skill-face::after {
+      content: "";
+      position: absolute;
+      inset: 12%;
+      border-radius: inherit;
+      border: 1px solid rgba(255,255,255,.28);
+      pointer-events: none;
+    }
+    .skill-front img {
+      width: 46%;
+      height: 46%;
+      object-fit: contain;
+      filter: drop-shadow(0 12px 16px rgba(15,23,42,.16));
+      transform: translateZ(22px);
+    }
+    .skill-back {
+      transform: rotateY(180deg);
+      padding: 12px;
+      background:
+        radial-gradient(circle at 70% 25%, color-mix(in srgb, var(--accent-2) 22%, transparent), transparent 34%),
+        linear-gradient(135deg, color-mix(in srgb, var(--accent) 15%, var(--surface)), var(--surface-strong));
+    }
+    .skill-name {
+      position: relative;
+      z-index: 1;
+      font-size: 13px;
+      line-height: 1.2;
+      font-weight: 950;
+      text-align: center;
+      letter-spacing: -.02em;
+    }
 
     .contact-band {
       border: 1px solid var(--line);
@@ -675,7 +745,174 @@
         </div>
         <div class="card" style="margin-top:18px">
           <div class="skill-cloud">
-            <span class="tag"><img src="https://cdn.simpleicons.org/python" alt="Python logo" loading="lazy">Python</span><span class="tag"><img src="https://cdn.simpleicons.org/javascript" alt="JavaScript logo" loading="lazy">JavaScript</span><span class="tag"><img src="https://cdn.simpleicons.org/react" alt="React logo" loading="lazy">React</span><span class="tag"><img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js logo" loading="lazy">Node.js</span><span class="tag"><img src="https://cdn.simpleicons.org/flask" alt="Flask logo" loading="lazy">Flask</span><span class="tag"><img src="https://cdn.simpleicons.org/docker" alt="Docker logo" loading="lazy">Docker</span><span class="tag"><img src="https://cdn.simpleicons.org/kubernetes" alt="Kubernetes logo" loading="lazy">Kubernetes</span><span class="tag"><img src="https://cdn.simpleicons.org/amazonaws" alt="AWS logo" loading="lazy">AWS</span><span class="tag"><img src="https://cdn.simpleicons.org/terraform" alt="Terraform logo" loading="lazy">Terraform</span><span class="tag"><img src="https://cdn.simpleicons.org/jenkins" alt="Jenkins logo" loading="lazy">Jenkins</span><span class="tag"><img src="https://cdn.simpleicons.org/argocd" alt="ArgoCD logo" loading="lazy">ArgoCD</span><span class="tag"><img src="https://cdn.simpleicons.org/linux" alt="Linux logo" loading="lazy">Linux</span><span class="tag"><img src="https://cdn.simpleicons.org/gnubash" alt="Bash logo" loading="lazy">Bash</span><span class="tag"><img src="https://cdn.simpleicons.org/git" alt="Git logo" loading="lazy">Git</span><span class="tag"><img src="https://cdn.simpleicons.org/c" alt="C logo" loading="lazy">C</span><span class="tag"><img src="https://cdn.simpleicons.org/openjdk" alt="Java logo" loading="lazy">Java</span><span class="tag"><img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB logo" loading="lazy">MongoDB</span><span class="tag"><img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL logo" loading="lazy">PostgreSQL</span>
+            <button class="skill-bubble" type="button" aria-label="Reveal Python">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/python" alt="Python logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Python</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal JavaScript">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/javascript" alt="JavaScript logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">JavaScript</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal HTML5">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/html5" alt="HTML5 logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">HTML5</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal CSS3">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/css" alt="CSS3 logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">CSS3</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Tailwind CSS">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/tailwindcss" alt="Tailwind CSS logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Tailwind CSS</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Flutter">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/flutter" alt="Flutter logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Flutter</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal React">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/react" alt="React logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">React</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Next.js">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/nextdotjs" alt="Next.js logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Next.js</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Node.js">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/nodedotjs" alt="Node.js logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Node.js</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Flask">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/flask" alt="Flask logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Flask</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Spring Boot">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/springboot" alt="Spring Boot logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Spring Boot</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Docker">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/docker" alt="Docker logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Docker</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Kubernetes">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/kubernetes" alt="Kubernetes logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Kubernetes</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Helm">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/helm" alt="Helm logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Helm</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal AWS">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/amazonwebservices/amazonwebservices-original-wordmark.svg" alt="AWS logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">AWS</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Terraform">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/terraform" alt="Terraform logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Terraform</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Jenkins">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/jenkins" alt="Jenkins logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Jenkins</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal ArgoCD">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/argo" alt="ArgoCD logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">ArgoCD</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Linux">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/linux" alt="Linux logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Linux</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Bash">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/gnubash" alt="Bash logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Bash</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Git">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/git" alt="Git logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Git</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Java">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/openjdk" alt="Java logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Java</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal C">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/c" alt="C logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">C</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal MongoDB">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/mongodb" alt="MongoDB logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">MongoDB</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal PostgreSQL">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/postgresql" alt="PostgreSQL logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">PostgreSQL</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Firebase">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/firebase" alt="Firebase logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Firebase</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Prometheus">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/prometheus" alt="Prometheus logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Prometheus</span></span>
+              </span>
+            </button>
+            <button class="skill-bubble" type="button" aria-label="Reveal Grafana">
+              <span class="skill-bubble-inner">
+                <span class="skill-face skill-front"><img src="https://cdn.simpleicons.org/grafana" alt="Grafana logo" loading="lazy"></span>
+                <span class="skill-face skill-back"><span class="skill-name">Grafana</span></span>
+              </span>
+            </button>
           </div>
         </div>
       </div>
@@ -789,6 +1026,10 @@
       button.addEventListener('click', () => askApollo(button.dataset.question || button.textContent));
     });
 
+    document.querySelectorAll('.skill-bubble').forEach((bubble) => {
+      bubble.addEventListener('click', () => bubble.classList.toggle('is-flipped'));
+    });
+
     const reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (!reducedMotion && window.gsap && window.ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger);
@@ -845,7 +1086,7 @@
         }
       });
 
-      gsap.from('.skill-cloud .tag', {
+      gsap.from('.skill-bubble', {
         y: 22, opacity: 0, stagger: 0.035, ease: 'power2.out',
         scrollTrigger: { trigger: '.skill-cloud', start: 'top 82%', once: true }
       });
