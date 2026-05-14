@@ -11,6 +11,7 @@ This project is intended to be deployed on Vercel.
 - Cinematic scroll-driven landing page
 - Light/Dark mode
 - Project showcase with GitHub repository links
+- Downloadable CV button in the hero section
 - Apollo/Hermes AI Agent concept section
 - Certifications section
 - Responsive static HTML/CSS/JavaScript
