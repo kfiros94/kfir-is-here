@@ -20,7 +20,7 @@ This project is intended to be deployed on Vercel.
 - GeoDish
 - Attenglish
 - Hebrew TTS & Contextual Translation
-- BiteMe / DevOps Labs
+- WinFlow
 
 ## Local preview
 
